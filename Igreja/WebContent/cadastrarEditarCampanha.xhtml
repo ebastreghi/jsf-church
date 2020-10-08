@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+<f:metadata>
+	<f:viewParam name="campanhaId" value="#{campanhaBean.campanhaId}"></f:viewParam>
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">	
+	<ui:define name="head">
+		<title>
+			<ui:fragment rendered="#{campanhaBean.campanhaId == null}">Cadastrar Campanha</ui:fragment>
+			<ui:fragment rendered="#{campanhaBean.campanhaId != null}">Editar Campanha</ui:fragment>
+		</title>
+	</ui:define>
+	
+	<ui:define name="breadcrumb">
+		<p:menuitem rendered="#{campanhaBean.campanhaId == null}" value="Cadastrar Campanha"/>
+		<p:menuitem rendered="#{campanhaBean.campanhaId != null}" value="Editar Campanha"/>
+	</ui:define>
+	
+	<ui:define name="content">
+	
+	  	<script type="text/javascript">
+			function validaData(){
+				var dataInicio = document.getElementById("form:idDataInicio_input").value;
+				var dataFim = document.getElementById("form:idDataFim_input").value;
+				if (dataInicio > dataFim){
+					alert("A Data do Início não pode ser maior do que a Data do Fim!");
+					return false;
+				}else{
+					return true;
+				}
+			}
+		</script>
+		
+  		<h:form id="form">
+  		<p:messages autoUpdate="true"/>
+  			<fieldset>
+  				<legend>
+  					<h:outputText rendered="#{campanhaBean.campanhaId == null}" value="Cadastrar Campanha"/>
+	  				<h:outputText rendered="#{campanhaBean.campanhaId != null}" value="Editar Campanha"/>
+  				</legend>
+  				
+  				<hr/>
+				
+	  			<p:panelGrid id="idPg" columns="2">
+	  				Nome: <p:inputText value="#{campanhaBean.campanha.nome}" label="Nome" required="true"></p:inputText>
+	  				Data do Início: <p:calendar id="idDataInicio" navigator="true" value="#{campanhaBean.campanha.dataInicio}" pattern="dd/MM/yyyy" mask="true" label="Data do Início" required="true"/>
+	  				Data do Fim: <p:calendar id="idDataFim" navigator="true" value="#{campanhaBean.campanha.dataFim}" pattern="dd/MM/yyyy" mask="true" label="Data do Fim" required="true"/>
+	  			</p:panelGrid>
+	  			
+	  			<p:spacer height="10px"/>
+	  			
+	  			<p:toolbar>
+	  				<p:toolbarGroup align="right">
+	  					<p:commandButton ajax="false" value="Salvar" icon="ui-icon-disk" action="#{campanhaBean.salvar()}" onclick="return validaData();"/>
+	  				</p:toolbarGroup>
+	  			</p:toolbar>
+	  			
+  			</fieldset>
+		</h:form>
+	</ui:define>
+	
+</ui:composition>
+</html>

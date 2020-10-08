@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+<f:metadata>
+	<f:viewParam name="pesquisaAutomatica" value="#{colaboradorCampanhaBean.pesquisaAutomatica}"></f:viewParam>
+	<f:viewParam name="excluirCC" value="#{colaboradorCampanhaBean.excluirCC}"></f:viewParam>
+	<f:viewParam name="colaboradorId" value="#{colaboradorCampanhaBean.colaboradorId}"></f:viewParam>
+	<f:viewParam name="campanhaId" value="#{colaboradorCampanhaBean.campanhaId}"></f:viewParam>
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="head">
+		<title>
+			Pesquisar Doação
+		</title>
+	</ui:define>
+	
+	<ui:define name="content">
+  		<h:form>
+  		<p:messages autoUpdate="true"></p:messages>
+  			<p:panelGrid columns="5" style="border:0px">
+  				Campanha: <p:selectOneMenu value="#{colaboradorCampanhaBean.colaboradorCampanha.campanha}" converter="converterCampanha" label="Campanha">
+							  <f:selectItem itemLabel="--Selecione--" noSelectionOption="true"/>
+							  <f:selectItems value="#{campanhaBean.campanhas}" var="campanha" itemValue="#{campanha}" itemLabel="#{campanha.nome}"/>
+						  </p:selectOneMenu>
+				Colaborador: <p:selectOneMenu value="#{colaboradorCampanhaBean.colaboradorCampanha.colaborador}" converter="converterColaborador" label="Colaborador">
+							     <f:selectItem itemLabel="--Selecione--" noSelectionOption="true"/>
+							     <f:selectItems value="#{colaboradorBean.colaboradores}" var="colaborador" itemValue="#{colaborador}" itemLabel="#{colaborador.nome}"/>
+						     </p:selectOneMenu>
+				<p:commandButton value="Pesquisar" icon="ui-icon-search" action="#{colaboradorCampanhaBean.pesquisar()}" ajax="false"/>
+  			</p:panelGrid>
+  			<br></br>
+  			<p:dataTable value="#{colaboradorCampanhaBean.colaboradoresCampanhas}" var="cc" style="text-align:center" emptyMessage="Nenhum registro encontrado.">
+  				<p:column>
+  					<f:facet name="header">Campanha</f:facet>
+  					#{cc.campanha.nome}
+  				</p:column>
+  				<p:column>
+  					<f:facet name="header">Colaborador</f:facet>
+  					#{cc.colaborador.nome}
+  				</p:column>
+  				<p:column>
+  					<f:facet name="header">Valor</f:facet>
+  					<h:outputText value="#{cc.valor}">
+  						<f:convertNumber currencyCode="BRL" type="currency"/>
+  					</h:outputText>
+  				</p:column>
+  				<p:column>
+  					<f:facet name="header">Editar/Excluir</f:facet>
+  					<h:link value="Editar" outcome="cadastrarEditarDoacao.xhtml">
+  						<f:param name="colaboradorCampanhaId" value="#{cc.idColaboradorCampanha}"/>
+  					</h:link>
+  					|
+  					<h:link value="Excluir" outcome="pesquisarDoacao.xhtml" onclick="return perguntaExcluir()">
+  						<f:param name="excluirCC" value="#{cc.idColaboradorCampanha}"/>						
+  					</h:link>
+  				</p:column>
+  				<f:facet name="footer">
+  					Total: 
+  					<h:outputText value="#{colaboradorCampanhaBean.totalPesquisa}">
+  						<f:convertNumber currencyCode="BRL" type="currency"/>
+  					</h:outputText>
+  				</f:facet>
+  			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

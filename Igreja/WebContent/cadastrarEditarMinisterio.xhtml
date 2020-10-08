@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+      
+<f:metadata>
+	<f:viewParam name="idMinisterio" value="#{ministerioBean.idMinisterio}"/>
+</f:metadata>
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="head">
+		<title>
+			<ui:fragment rendered="#{ministerioBean.idMinisterio == null}">Cadastrar Ministério</ui:fragment>
+			<ui:fragment rendered="#{ministerioBean.idMinisterio != null}">Editar Ministério</ui:fragment>
+		</title>
+	</ui:define>
+	
+	<ui:define name="breadcrumb">
+		<p:menuitem rendered="#{ministerioBean.idMinisterio == null}" value="Cadastrar Ministério"/>
+		<p:menuitem rendered="#{ministerioBean.idMinisterio != null}" value="Editar Ministério"/>
+	</ui:define>
+	
+	<ui:define name="content">
+  		<h:form id="form">
+  		<p:messages autoUpdate="true"/>
+  			<fieldset>
+	  			<legend>
+	  				<h:outputText rendered="#{ministerioBean.idMinisterio == null}" value="Cadastrar Ministério"/>
+		  			<h:outputText rendered="#{ministerioBean.idMinisterio != null}" value="Editar Ministério"/>
+	  			</legend>
+	  			
+	  			<hr/>
+	  			
+	  			<p:panelGrid columns="2">
+	  				Nome: <p:inputText value="#{ministerioBean.ministerio.nome}" label="Nome" required="true"/>
+	  				Lider: <p:selectOneMenu value="#{ministerioBean.ministerio.colaboradorLider}" required="true" label="Lider" converter="converterColaborador">
+	  					   		<f:selectItem itemLabel="--Selecione--" noSelectionOption="true"/>
+	  					   		<f:selectItems value="#{colaboradorBean.colaboradores}" var="colaborador" itemValue="#{colaborador}" itemLabel="#{colaborador.nome}"/>
+	  					   </p:selectOneMenu>
+	  			</p:panelGrid>
+	  			
+	  			<p:spacer height="10px"/>
+	  			
+	  			<p:toolbar>
+	  				<p:toolbarGroup align="right">
+	  					<p:commandButton ajax="false" value="Salvar" icon="ui-icon-disk" action="#{ministerioBean.salvar()}"/>
+	  				</p:toolbarGroup>
+	  			</p:toolbar>
+	  			
+  			</fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
