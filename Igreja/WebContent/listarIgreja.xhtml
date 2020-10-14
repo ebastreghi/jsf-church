@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="head">
+		<title>
+			Lista de Igrejas
+		</title>
+	</ui:define>
+	
+	<ui:define name="content">
+  		<h:form id="form">
+  			<p:dataTable value="#{igrejaBean.listIgreja}" var="igreja" style="text-align:center" emptyMessage="Nenhum registro encontrado.">
+  				<p:column>
+  					<f:facet name="header">Nome</f:facet>
+  					 #{igreja.nome} 
+  				</p:column>
+  				<p:column>
+  					<f:facet name="header">Cidade</f:facet>
+  					 #{igreja.cidade} 
+  				</p:column>
+  				<p:column>
+  					<f:facet name="header">Estado</f:facet>
+  					 #{igreja.estado} 
+  				</p:column>
+  				<p:column>
+  					<f:facet name="header">Endereço</f:facet>
+  					 #{igreja.endereco} 
+  				</p:column>
+  				<p:column>
+  					<f:facet name="header">Editar/Excluir</f:facet>
+  					<h:link value="Editar" outcome="cadastrarEditarIgreja.xhtml">
+  						<f:param name="igrejaId" value="#{igreja.idIgreja}"></f:param>
+  					</h:link>
+  					|
+  					<h:commandLink value="Excluir" action="#{igrejaBean.excluir()}" onclick="return perguntaExcluir()">
+  						<f:setPropertyActionListener target="#{igrejaBean.igreja}" value="#{igreja}"/>
+  					</h:commandLink>
+  				</p:column>
+  			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
